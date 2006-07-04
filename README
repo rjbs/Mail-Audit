@@ -1,15 +1,4 @@
 
-MAIL::AUDIT
-
-This is the 2.1 release of Mail::Audit, which includes both "popread"
-and "proc2ma".
-
-WHAT'S NEW IN THIS RELEASE?
-
-MIME support, intelligent filenames, and emergency deferral.
-
-OVERVIEW
-
 This is what Mail::Audit is all about:
 
     NAME
