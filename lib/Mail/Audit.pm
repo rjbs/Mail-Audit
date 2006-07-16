@@ -35,7 +35,7 @@ use constant DEFERRED  => EX_TEMPFAIL;
 use constant REJECTED  => 100;
 use constant DELIVERED => 0;
 
-$Mail::Audit::VERSION = '2.200_06';
+$Mail::Audit::VERSION = '2.201';
 
 =head1 NAME
 
