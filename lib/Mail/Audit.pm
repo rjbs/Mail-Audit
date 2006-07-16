@@ -1192,7 +1192,7 @@ sub _mkdir_p {  # mkdir -p (also create parents if necessary)
     if (my $error = $self->_mkdir_p(File::Basename::dirname($_))) {
       return $error
     }
-    mkdir($_, 0777) or return "unable to mkdir $_: $!";
+    mkdir($_, 0755) or return "unable to mkdir $_: $!";
   }
   return;
 }
