@@ -769,7 +769,8 @@ sub resend {
 
 This opens a pipe to an external program and feeds the mail to it.
 
-This is a final delivery method.  Set C<noexit> if you want to keep going.
+This is a final delivery method.  Set C<noexit> if you want to keep going.  If
+C<noexit> is set, the exit status of the pipe is returned.
 
 =cut
 
@@ -792,7 +793,8 @@ sub pipe {
 
   $self->print($pipe);
   close $pipe;
-  $self->_log(3, "Pipe closed with status $?");
+  my $status = $? >> 8;
+  $self->_log(3, "Pipe closed with status $status");
 
   unless ((exists $local_opts->{noexit} and $local_opts->{noexit})
     or $self->{_audit_opts}->{noexit}
@@ -800,6 +802,8 @@ sub pipe {
     $self->_log(2, "Exiting with status DELIVERED = " . DELIVERED);
     $self->_exit(DELIVERED);
   }
+
+  return $status;
 }
 
 =item C<ignore>

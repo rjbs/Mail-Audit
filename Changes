@@ -3,6 +3,7 @@ Revision history for Perl extension Mail::Audit.
 2.200_06 2006-07-16
          use File::Temp a few places where it's indicated
          add a munge_name arg to Mail::Audit::List
+         pipe now returns the exit status of the pipe
          fix directory permissions
          fixed bugs in proc2ma (ticket 2982, thanks MARKSTOS)
 

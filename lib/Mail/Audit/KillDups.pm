@@ -32,18 +32,15 @@ sub killdups {
     if ($_ eq $mid) {
       $self->_log(1, "Duplicate, ignoring");
       $self->ignore;
-      return 2;
+      return -1;
     }
 
     $current_pos = tell MSGID;
     if ($current_pos > $Mail::Audit::KillDups::cache_bytes && $end_of_ring == 0)
     {
-
       # we've gotten too big, write this mid back at the top of the file
-
       last;
     } elsif ($_ eq "" && $end_of_ring == 0 && $current_pos > 0) {
-
       # Found the end of the ring buffer, so save position.
       $end_of_ring = $current_pos - 1;
     }
@@ -53,13 +50,13 @@ sub killdups {
   unless (seek MSGID, $end_of_ring, 0) {
     $self->_log(1, "seek to position $end_of_ring failed: $!");
     close MSGID;
-    return 3;
+    return 1;
   }
 
   print MSGID "$mid\n\n";
   close MSGID;
 
-  return 0;
+  return;
 }
 
 1;
@@ -103,6 +100,12 @@ C<$Mail::Audit::KillDups::cache_bytes> bytes, the message id will be
 written at the beginning of the file.  Old message ids in the file
 will be overwritten.  The default cache size is 10000 bytes, which is
 enough space for about 200 message-ids.
+
+The semantics are tortured; the return values are as follows:
+
+  false - not a duplicate
+  +1    - an error occured during dupcheck
+  -1    - message is a duplicate
 
 =back
 
