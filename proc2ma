@@ -1,4 +1,4 @@
-#! /usr/local/bin/perl
+#!/usr/bin/perl
 my @grammar;
 
 my (%flags, $return);
@@ -16,7 +16,7 @@ my $grammar = q{
             { my $from=$1; 
               my $what; 
               ($what = $2) =~ s/\$(\w+)/\$ENV{$1}/g; 
-              $return = "\$ENV{$from}=qq($what)"; }
+              $return = "\$ENV{$from}=qq($what);"; }
         filename : /\w+/
         recipe : { %main::flags = undef; } <reject>
         recipe : ':0' flag(?) locallock(?) "\n" condition(s) action "\n"
@@ -69,7 +69,7 @@ sub parse_find {
     my ($type, $pat) = @_;
     my $match;
     my $func; 
-    if ($flags{H} or !$flags{B}) { $func = "\$item->header" } else { $func = "join ('', \$item->body)"; }
+    if ($flags{H} or !$flags{B}) { $func = "header" } else { $func = "join ('', \$item->body)"; }
     if ($type eq "<" or $type eq ">") { 
         return $return = "length(\$item->$func()) $type $pat"; 
     }
