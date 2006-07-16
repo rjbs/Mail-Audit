@@ -20,8 +20,8 @@ lib/Mail/Audit/Vacation.pm
 Makefile.PL
 MANIFEST
 META.yml
-popread
-proc2ma
+bin/popread
+bin/proc2ma
 README
 t/basic.t
 t/custom-accept.t

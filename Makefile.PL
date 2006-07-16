@@ -11,6 +11,7 @@ license       ('perl');
 version_from  ('lib/Mail/Audit.pm');
 
 requires      ('Fcntl'          => 0);
+requires      ('File::Temp'     => 0);
 requires      ('MIME::Entity'   => 0);
 requires      ('Mail::Internet' => 0);
 requires      ('Mail::ListDetector' => 0);

@@ -10,6 +10,7 @@ Mail::Audit::MailInternet - a Mail::Internet-based Mail::Audit object
 
 use strict;
 use File::Path;
+use File::Temp ();
 use MIME::Parser;
 use MIME::Entity;
 use Mail::Audit::MailInternet;
@@ -19,7 +20,7 @@ use vars qw($VERSION @ISA @EXPORT @EXPORT_OK $MIME_PARSER_TMPDIR);
 $VERSION = '2.0';
 
 # this may be a security problem on an untrusted multiuser system.
-$MIME_PARSER_TMPDIR = "/tmp/" . getpwuid($>) . "-mailaudit";
+# $MIME_PARSER_TMPDIR = "/tmp/" . getpwuid($>) . "-mailaudit";
 
 my $parser;
 
@@ -37,10 +38,9 @@ sub _autotype_new {
   if ($options->{output_to_core}) {
     $parser->output_to_core($options->{'output_to_core'});
   } else {
-    $mailinternet->_log(3, "doing mkdir $MIME_PARSER_TMPDIR");
-    mkdir($MIME_PARSER_TMPDIR, 0777);
-    $MIME_PARSER_TMPDIR = "/tmp" unless -d $MIME_PARSER_TMPDIR;
-    $parser->output_under($MIME_PARSER_TMPDIR);
+    my $dir = File::Temp::tempdir(CLEANUP => 1);
+    $mailinternet->_log(3, "created temporary directory $dir");
+    $parser->output_under($dir);
   }
 
   # MIME::Parser has options like extract_nested_messages which are set via
@@ -81,7 +81,6 @@ sub _autotype_new {
 
   unless ($options->{output_to_core}) {
     my $output_dir = $parser->filer->output_dir;
-    push @to_rmdir, $output_dir;
     $mailinternet->_log(3, "outputting under $output_dir");
   }
 
@@ -98,19 +97,6 @@ This method is B<very> likely to go away.
 =cut
 
 sub parser { $parser ||= MIME::Parser->new(); }
-
-sub DESTROY {
-  my $self = shift;
-
-  $self->_log(3, "running Mail::Audit::MimeEntity DESTROY on $self");
-
-  foreach my $dir (@to_rmdir) {
-    next if index($dir, $MIME_PARSER_TMPDIR) != 0;
-    $self->_log(3, "attempting to rm $dir");
-    rmtree($dir) or $self->_log(3, "rmdir error: $!");
-  }
-
-}
 
 sub is_mime { 1; }
 
