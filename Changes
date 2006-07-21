@@ -1,5 +1,9 @@
 Revision history for Perl extension Mail::Audit.
 
+2.202    2006-07-21
+         test fix: don't rely on default mbox not existing; force it to fail
+         prune list of sysexits.h-like error code constants
+
 2.201    2006-07-16
          use File::Temp a few places where it's indicated
          add a munge_name arg to Mail::Audit::List

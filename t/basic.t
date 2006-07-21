@@ -5,7 +5,7 @@ use warnings;
 use File::Spec ();
 use File::Temp ();
 
-use Test::More 'no_plan';
+use Test::More tests => 10;
 
 BEGIN { use_ok('Mail::Audit'); }
 
@@ -21,7 +21,11 @@ sub readfile {
 my $message = readfile('t/messages/simple.msg');
 
 my $maildir   = File::Temp::tempdir(CLEANUP => 1);
+my $faildir   = File::Temp::tempdir(CLEANUP => 1);
 my $emergency = File::Temp::tempdir(CLEANUP => 1);
+
+chmod 0000 => $faildir;
+$ENV{MAIL} =  $faildir;
 
 my $logdir    = File::Temp::tempdir(CLEANUP => 1);
 

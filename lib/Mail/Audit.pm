@@ -14,28 +14,11 @@ use Sys::Hostname ();
 
 use Fcntl ':flock';
 
-# stolen from linux sysexits.h, YMMV on other OSes.  sorry, but it was either this or forcing everyone to h2ph.
-use constant EX_USAGE       => 64;  # command line usage error
-use constant EX_DATAERR     => 65;  # data format error
-use constant EX_NOINPUT     => 66;  # cannot open input
-use constant EX_NOUSER      => 67;  # addressee unknown
-use constant EX_NOHOST      => 68;  # host name unknown
-use constant EX_UNAVAILABLE => 69;  # service unavailable
-use constant EX_SOFTWARE    => 70;  # internal software error
-use constant EX_OSERR       => 71;  # system error (e.g., can't fork)
-use constant EX_OSFILE      => 72;  # critical OS file missing
-use constant EX_CANTCREAT   => 73;  # can't create (user) output file
-use constant EX_IOERR       => 74;  # input/output error
-use constant EX_TEMPFAIL    => 75;  # temp failure; user is invited to retry
-use constant EX_PROTOCOL    => 76;  # remote error in protocol
-use constant EX_NOPERM      => 77;  # permission denied
-use constant EX_CONFIG      => 78;  # configuration error
-
-use constant DEFERRED  => EX_TEMPFAIL;
 use constant REJECTED  => 100;
+use constant DEFERRED  => 75;
 use constant DELIVERED => 0;
 
-$Mail::Audit::VERSION = '2.201';
+$Mail::Audit::VERSION = '2.202';
 
 =head1 NAME
 
@@ -421,17 +404,17 @@ sub accept {
     if (not defined $emergency) {
       $self->_log(0,
         "unable to write to @files and no emergency mailbox defined; "
-        . "exiting EX_TEMPFAIL"
+        . "exiting DEFERRED"
       );
       warn "unable to write to @files";
       $self->_exit(DEFERRED);
     } else {
       if (grep { $emergency eq $_ } @files) {  # already tried that mailbox
         if (@files == 1) {
-          $self->_log(0, "unable to write to @files; exiting EX_TEMPFAIL");
+          $self->_log(0, "unable to write to @files; exiting DEFERRED");
         } else {
           $self->_log(0,
-            "unable to write to any of (@files), which includes the emergency mailbox; exiting EX_TEMPFAIL"
+            "unable to write to any of (@files), which includes the emergency mailbox; exiting DEFERRED"
           );
         }
         warn "unable to write to @files";
@@ -442,7 +425,7 @@ sub accept {
         @actually_saved_to_files = $self->$accept_handler($emergency);
         if (not @actually_saved_to_files) {
           $self->_log(0,
-            "unable to write to @files or to emergency mailbox $emergency either; exiting EX_TEMPFAIL"
+            "unable to write to @files or to emergency mailbox $emergency either; exiting DEFERRED"
           );
           warn "unable to write to @files" ;
           $self->_exit(DEFERRED);
@@ -1212,6 +1195,13 @@ Numerous and sometimes nasty.  RJBS is working to eradicate them all.
 
 L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Mail-Audit>
 
+=head1 PERL EMAIL PROJECT
+
+This module is maintained by the Perl Email Project, and is considered
+superseded by L<Email::Filter>.
+
+L<http://emailproject.perl.org/wiki/Mail::Audit>
+
 =head1 CAVEATS
 
 If your mailbox file in /var/spool/mail/ doesn't already exist, you may need to
@@ -1229,13 +1219,14 @@ bloated v2.1, adding MIME support, emergency recovery, filename interpolation,
 and autoreply features.
 
 Ricardo SIGNES <rjbs@cpan.org> took over after Meng and tried to tame the
-beast, refactoring, documenting, and testing.
+beast, refactoring, documenting, and testing.  Thanks to Listbox.com for
+sponsoring maintenance of this module!
 
 =head1 SEE ALSO
 
-L<http://www.perl.com/pub/a/2001/07/17/mailfiltering.html>
-
 =over
+
+=item * L<http://www.perl.com/pub/a/2001/07/17/mailfiltering.html>
 
 =item * L<Mail::Internet>
 
