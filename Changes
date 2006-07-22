@@ -1,5 +1,8 @@
 Revision history for Perl extension Mail::Audit.
 
+2.203    2006-07-21
+         update PEP information
+
 2.202    2006-07-21
          test fix: don't rely on default mbox not existing; force it to fail
          prune list of sysexits.h-like error code constants
