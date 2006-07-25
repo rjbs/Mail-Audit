@@ -75,7 +75,8 @@ sub _log {
   my ($subroutine) = (caller(1))[3];
   $subroutine =~ s/(.*):://;
   my ($line) = (caller(0))[2];
-  print { $self->{_log}{fh} } "$line($subroutine): $what\n";
+  print { $self->{_log}{fh} } "$line($subroutine): $what\n"
+    or die "couldn't write to log file";
 }
 
 sub _get_opt {
@@ -161,8 +162,12 @@ sub new {
   $log->{fh} = Symbol::gensym;
   $log->{level} = exists $opts{loglevel} ? $opts{loglevel} : 3;
 
-  $log->{file} 
-    = exists $opts{log} ? $opts{log} : ("/tmp/" . getpwuid($>) . "-audit.log");
+  $log->{file} = exists $opts{log}
+               ? $opts{log}
+               : File::Spec->catfile(
+                   File::Spec->tmpdir,
+                   getpwuid($>) . "-audit.log"
+                 );
 
   unless ($log->{file} and open $log->{fh}, ">>$log->{file}") {
     warn "couldn't open $log->{file} to log" if $log->{file};
