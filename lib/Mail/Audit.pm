@@ -5,6 +5,7 @@ use strict;
 
 use Carp ();
 use File::Basename ();
+use File::HomeDir ();
 use File::Spec ();
 use Mail::Audit::MailInternet ();
 use Mail::Internet ();
@@ -18,7 +19,7 @@ use constant REJECTED  => 100;
 use constant DEFERRED  => 75;
 use constant DELIVERED => 0;
 
-$Mail::Audit::VERSION = '2.203';
+$Mail::Audit::VERSION = '2.210';
 
 =head1 NAME
 
@@ -166,7 +167,7 @@ sub new {
                ? $opts{log}
                : File::Spec->catfile(
                    File::Spec->tmpdir,
-                   getpwuid($>) . "-audit.log"
+                   "$>-audit.log"
                  );
 
   unless ($log->{file} and open $log->{fh}, ">>$log->{file}") {
@@ -219,8 +220,13 @@ sub new {
   $self->{_audit_opts}->{interpolate_strftime} ||= 0;
   $self->{_audit_opts}->{one_for_all}          ||= 0;
 
-  # XXX: How very unixocentric of us. -- rjbs, 2006-06-04
-  my $default_maildir = ((getpwuid($>))[7]) . '/Maildir';
+  my $default_maildir = File::Spec->catdir(
+    File::HomeDir->my_home,
+    'Maildir'
+  );
+
+  # XXX: How very unixocentric of us; how can we fix this? -- rjbs, 2006-06-04
+  #      It's not really broken, but it's also not very awesome.
   my $default_mbox = 
     $ENV{MAIL}
     || (-d File::Spec->catdir($default_maildir, 'new') ? $default_maildir : ())
@@ -327,14 +333,17 @@ sub _shorthand_expand {
     import POSIX qw(strftime);
     @out = map { strftime($_, @localtime) } @out;
   }
-  # We should replace getpwuid with File::HomeDir, in case someone uses this on
-  # Win32.  (That would be a surprise!) -- rjbs, 2006-06-04
-  @out = map {
-    s{^~/}     {((getpwuid($>))[7])."/"}e;
-    s{^~(\w+)/}{((getpwnam($1))[7])."/"}e;
-    $_
-  } @out;
-  return @out;
+
+  return @out = map { $self->_expand_homedir($_) } @out;
+}
+
+sub _expand_homedir {
+  my ($self, $path) = @_;
+  
+  my ($user, $rest) = $path =~ m!^~(\w*)((?:[/\\]).+)?$!;
+
+  return $path unless defined $user and defined $rest;
+  return $~{$user} . $rest;
 }
 
 sub accept {

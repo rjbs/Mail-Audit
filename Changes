@@ -1,5 +1,8 @@
 Revision history for Perl extension Mail::Audit.
 
+2.210    2006-09-19
+         use File::HomeDir to reduce unix-o-centrism
+
 2.203    2006-07-21
          update PEP information
 
