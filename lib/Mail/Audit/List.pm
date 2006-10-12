@@ -16,7 +16,7 @@ sub list_accept {
   $dir ||= $DEFAULT_DIR;
   $arg ||= {};
 
-  my $list = Mail::ListDetector->new($self->{obj});
+  my $list = Mail::ListDetector->new($self);
 
   if (!(defined $list)) {
     return 0;

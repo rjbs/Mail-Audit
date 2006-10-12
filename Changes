@@ -1,5 +1,8 @@
 Revision history for Perl extension Mail::Audit.
 
+2.211    2006-09-19
+         fix Mail::Audit::List breakage; it needs tests!; rt #20934
+
 2.210    2006-09-19
          use File::HomeDir to reduce unix-o-centrism
 
