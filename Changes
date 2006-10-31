@@ -1,5 +1,8 @@
 Revision history for Perl extension Mail::Audit.
 
+2.212    2006-10-31
+         try to avoid letting temp dirs linger too long
+
 2.211    2006-09-19
          fix Mail::Audit::List breakage; it needs tests!; rt #20934
 

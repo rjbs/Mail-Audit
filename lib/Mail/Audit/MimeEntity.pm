@@ -10,7 +10,7 @@ Mail::Audit::MailInternet - a Mail::Internet-based Mail::Audit object
 
 use strict;
 use File::Path;
-use File::Temp ();
+use File::Tempdir ();
 use MIME::Parser;
 use MIME::Entity;
 use Mail::Audit::MailInternet;
@@ -35,12 +35,13 @@ sub _autotype_new {
 
   $parser->ignore_errors(1);
 
+  my $dir;
   if ($options->{output_to_core}) {
     $parser->output_to_core($options->{'output_to_core'});
   } else {
-    my $dir = File::Temp::tempdir(CLEANUP => 1);
-    $mailinternet->_log(3, "created temporary directory $dir");
-    $parser->output_under($dir);
+    $dir = File::Tempdir->new;
+    $mailinternet->_log(3, "created temporary directory " . $dir->name);
+    $parser->output_under($dir->name);
   }
 
   # MIME::Parser has options like extract_nested_messages which are set via
@@ -84,6 +85,10 @@ sub _autotype_new {
     $mailinternet->_log(3, "outputting under $output_dir");
   }
 
+  # Augh!  These guts are so foul and convoluted.  I feel like I might as well
+  # be using guids.  Whatever, this will solve the tempdir-lingers-too-long
+  # problem. -- rjbs, 2006-10-31
+  $self->{'__Mail::Audit::MimeEntity/tempdir'} = $dir;
   bless($self, $class);
   return ($self, 0);
 }
