@@ -222,24 +222,38 @@ sub new {
   $self->{_audit_opts}->{interpolate_strftime} ||= 0;
   $self->{_audit_opts}->{one_for_all}          ||= 0;
 
+  return $self;
+}
+
+sub _emergency_mbox {
+  my ($self) = @_;
+
+  return $self->{_audit_opts}->{emergency}
+    if exists $self->{_audit_opts}->{emergency};
+
+  return $self->{_audit_opts}->{emergency} = $self->_default_mbox;
+}
+
+sub _default_mbox {
+  my ($self) = @_;
+  return $self->{_default_mbox} if exists $self->{_default_mbox};
+
+  # XXX: How very unixocentric of us; how can we fix this? -- rjbs, 2006-06-04
+  #      It's not really broken, but it's also not very awesome.
+  my $default_mbox = $ENV{MAIL};
+
+  return $default_mbox if $default_mbox;
+  
   my $default_maildir = File::Spec->catdir(
     File::HomeDir->my_home,
     'Maildir'
   );
 
-  # XXX: How very unixocentric of us; how can we fix this? -- rjbs, 2006-06-04
-  #      It's not really broken, but it's also not very awesome.
-  my $default_mbox = 
-    $ENV{MAIL}
-    || (-d File::Spec->catdir($default_maildir, 'new') ? $default_maildir : ())
+  $default_mbox =
+       (-d File::Spec->catdir($default_maildir, 'new') ? $default_maildir : ())
     || ((grep { -d $_ } qw(/var/spool/mail/ /var/mail/))[0] . getpwuid($>));
 
-  $self->{_default_mbox} = $default_mbox;
-
-  $self->{_audit_opts}->{emergency} = $default_mbox
-    unless exists $self->{_audit_opts}->{emergency};
-
-  return $self;
+  return $self->{_default_mbox} = $default_mbox;
 }
 
 # XXX: This is a test case until I have a better interface.  This will make
@@ -345,7 +359,7 @@ sub _expand_homedir {
   my ($user, $rest) = $path =~ m!^~(\w*)((?:[/\\]).+)?$!;
 
   return $path unless defined $user and defined $rest;
-  return $~{$user} . $rest;
+  return File::HomeDir->users_home($user) . $rest;
 }
 
 sub accept {
@@ -358,7 +372,7 @@ sub accept {
 
   my @files = $self->_shorthand_expand(@_, $local_opts);
 
-  @files = $self->{_default_mbox} unless @files;
+  @files = $self->_default_mbox unless @files;
 
   my @actually_saved_to_files = ();
 
@@ -416,7 +430,7 @@ sub accept {
   } else {
     # nothing got delivered, take emergency action.
 
-    my $emergency = $self->{_audit_opts}->{emergency};
+    my $emergency = $self->_emergency_mbox;
     if (not defined $emergency) {
       $self->_log(0,
         "unable to write to @files and no emergency mailbox defined; "
