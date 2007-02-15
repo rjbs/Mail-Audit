@@ -19,7 +19,7 @@ use constant REJECTED  => 100;
 use constant DEFERRED  => 75;
 use constant DELIVERED => 0;
 
-$Mail::Audit::VERSION = '2.212';
+$Mail::Audit::VERSION = '2.213';
 
 =head1 NAME
 
@@ -158,31 +158,33 @@ sub new {
 
   my $mime_test = (delete $opts{mime_test}) || $default_mime_test;
 
-  # set up logging
-  my $log = {};
-  $log->{fh} = Symbol::gensym;
-  $log->{level} = exists $opts{loglevel} ? $opts{loglevel} : 3;
-
-  $log->{file} = exists $opts{log}
-               ? $opts{log}
-               : File::Spec->catfile(
-                   File::Spec->tmpdir,
-                   "$>-audit.log"
-                 );
-
-  unless ($log->{file} and open $log->{fh}, ">>$log->{file}") {
-    warn "couldn't open $log->{file} to log" if $log->{file};
-    $log->{fh} = \*STDERR;
-  }
-
   my $self = Mail::Audit::MailInternet->new(
     (exists $opts{data} ? $opts{data} : \*STDIN),
     Modify => 0
   );
 
-  # This sucks, but the gut-construction order does, too.  We need to make it
-  # saner in general. -- rjbs, 2006-06-04
-  $self->{_log} = $log;
+  # set up logging
+  unless ($opts{no_log}) {
+    my $log = {};
+    $log->{fh} = Symbol::gensym;
+    $log->{level} = exists $opts{loglevel} ? $opts{loglevel} : 3;
+
+    $log->{file} = exists $opts{log}
+                 ? $opts{log}
+                 : File::Spec->catfile(
+                     File::Spec->tmpdir,
+                     "$>-audit.log"
+                   );
+
+    unless ($log->{file} and open $log->{fh}, ">>$log->{file}") {
+      warn "couldn't open $log->{file} to log" if $log->{file};
+      $log->{fh} = \*STDERR;
+    }
+
+    # This sucks, but the gut-construction order does, too.  We need to make it
+    # saner in general. -- rjbs, 2006-06-04
+    $self->{_log} = $log;
+  }
 
   $self->_log(1, "------------------------------ new run at " . localtime);
 

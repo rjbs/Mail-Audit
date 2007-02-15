@@ -1,5 +1,8 @@
 Revision history for Perl extension Mail::Audit.
 
+2.213    2007-02-15
+         add a no_log option
+
 2.212    2006-10-31
          try to avoid letting temp dirs linger too long
 
