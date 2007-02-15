@@ -359,7 +359,10 @@ sub _expand_homedir {
   my ($user, $rest) = $path =~ m!^~(\w*)((?:[/\\]).+)?$!;
 
   return $path unless defined $user and defined $rest;
-  return File::HomeDir->users_home($user) . $rest;
+  my $base = (length $user) ? File::HomeDir->users_home($user)
+                            : File::HomeDir->my_home;
+
+  return "$base$rest";
 }
 
 sub accept {
