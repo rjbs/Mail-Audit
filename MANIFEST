@@ -17,6 +17,7 @@ lib/Mail/Audit/MimeEntity.pm
 lib/Mail/Audit/PGP.pm
 lib/Mail/Audit/Razor.pm
 lib/Mail/Audit/Vacation.pm
+lib/Mail/Audit/Util/Tempdir.pm
 Makefile.PL
 MANIFEST
 META.yml

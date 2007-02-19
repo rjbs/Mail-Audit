@@ -10,7 +10,7 @@ Mail::Audit::MailInternet - a Mail::Internet-based Mail::Audit object
 
 use strict;
 use File::Path;
-use File::Tempdir ();
+use Mail::Audit::Util::Tempdir;
 use MIME::Parser;
 use MIME::Entity;
 use Mail::Audit::MailInternet;
@@ -39,7 +39,7 @@ sub _autotype_new {
   if ($options->{output_to_core}) {
     $parser->output_to_core($options->{'output_to_core'});
   } else {
-    $dir = File::Tempdir->new;
+    $dir = Mail::Audit::Util::Tempdir->new;
     $mailinternet->_log(3, "created temporary directory " . $dir->name);
     $parser->output_under($dir->name);
   }

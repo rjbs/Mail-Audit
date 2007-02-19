@@ -1,5 +1,8 @@
 Revision history for Perl extension Mail::Audit.
 
+2.215    2007-02-19
+         subclass File::Tempdir to avoid cleaning up in forked child
+
 2.214    2007-02-15
          refactor internals of emergency and default destinations
 
