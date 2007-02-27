@@ -66,11 +66,15 @@ ok(
 
 # XXX: This test will only work if default mbox will fail.  Make a way to force
 # that. -- rjbs, 2006-06-04
-$audit->accept({ noexit => 1 });
-ok(
-  (  -d File::Spec->catdir($emergency, 'new')),
-  "after accept without dest, emergency is maildir"
-);
+SKIP: {
+  skip "can't force delivery to default mbox to fail", 1;
+
+  $audit->accept({ noexit => 1 });
+  ok(
+    (  -d File::Spec->catdir($emergency, 'new')),
+    "after accept without dest, emergency is maildir"
+  );
+}
 
 pass("we're still still here! per-method noexit was respected");
 
