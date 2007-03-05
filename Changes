@@ -1,5 +1,8 @@
 Revision history for Perl extension Mail::Audit.
 
+2.217     2007-03-05
+          make the test skipped in 2.216 pass reliable (thanks to HDP for idea)
+
 2.216     2007-02-26
           skip a test that doesn't pass reliably
 

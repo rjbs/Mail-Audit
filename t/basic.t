@@ -21,11 +21,14 @@ sub readfile {
 my $message = readfile('t/messages/simple.msg');
 
 my $maildir   = File::Temp::tempdir(CLEANUP => 1);
-my $faildir   = File::Temp::tempdir(CLEANUP => 1);
 my $emergency = File::Temp::tempdir(CLEANUP => 1);
 
-chmod 0000 => $faildir;
-$ENV{MAIL} =  $faildir;
+# $faildir will be a directory name that would exist beneath a file, so it will
+# not be create-able; thanks to HDP for this idea, which replaces the previous
+# implementation, a directory chmod'ed 0000, which failed when the user was
+# root
+my (undef, $failfile) = File::Temp::tempfile(UNLINK => 1);
+my $faildir = File::Spec->catdir($failfile, 'Maildir');
 
 my $logdir    = File::Temp::tempdir(CLEANUP => 1);
 
@@ -64,17 +67,11 @@ ok(
   "but the other maildir, which we accepted, is"
 );
 
-# XXX: This test will only work if default mbox will fail.  Make a way to force
-# that. -- rjbs, 2006-06-04
-SKIP: {
-  skip "can't force delivery to default mbox to fail", 1;
-
-  $audit->accept({ noexit => 1 });
-  ok(
-    (  -d File::Spec->catdir($emergency, 'new')),
-    "after accept without dest, emergency is maildir"
-  );
-}
+$audit->accept($faildir, { noexit => 1 });
+ok(
+  (  -d File::Spec->catdir($emergency, 'new')),
+  "after accept to impossible destination, emergency is maildir"
+);
 
 pass("we're still still here! per-method noexit was respected");
 

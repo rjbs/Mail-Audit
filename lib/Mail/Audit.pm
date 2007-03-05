@@ -19,7 +19,7 @@ use constant REJECTED  => 100;
 use constant DEFERRED  => 75;
 use constant DELIVERED => 0;
 
-$Mail::Audit::VERSION = '2.216';
+$Mail::Audit::VERSION = '2.217';
 
 =head1 NAME
 
@@ -397,7 +397,7 @@ sub accept {
   #   (procmail will do so utilising hardlinks).
   #
   # for now we will support maildir and mbox delivery.
-  # MH delivery remains todo.
+  # MH delivery remains TODO.
   my %accept_types = (
     mbox      => [],
     maildir   => [],
@@ -873,7 +873,7 @@ after completion.
 sub _reply_recipient {
   my $self = shift;
 
-  # todo: clean this up with Mail::Address.  right now if From: <> we barf.
+  # TODO: clean this up with Mail::Address.  right now if From: <> we barf.
   return ($self->get("Resent-From")
       || $self->get("Reply-To")
       || $self->get("From")
@@ -1253,7 +1253,7 @@ and autoreply features.
 
 Ricardo SIGNES <rjbs@cpan.org> took over after Meng and tried to tame the
 beast, refactoring, documenting, and testing.  Thanks to Listbox.com for
-sponsoring maintenance of this module!
+sponsoring maintenance of this module !
 
 =head1 SEE ALSO
 
