@@ -1,5 +1,9 @@
 Revision history for Perl extension Mail::Audit.
 
+2.218     2007-03-06
+          remove List, Razor, and PGP plugins to their own dists
+          this is the first step in paring down Mail::Audit
+
 2.217     2007-03-05
           make the test skipped in 2.216 pass reliable (thanks to HDP for idea)
 

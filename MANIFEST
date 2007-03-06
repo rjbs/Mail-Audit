@@ -10,12 +10,9 @@ inc/Module/Install/Win32.pm
 inc/Module/Install/WriteAll.pm
 lib/Mail/Audit.pm
 lib/Mail/Audit/KillDups.pm
-lib/Mail/Audit/List.pm
 lib/Mail/Audit/MailInternet.pm
 lib/Mail/Audit/MAPS.pm
 lib/Mail/Audit/MimeEntity.pm
-lib/Mail/Audit/PGP.pm
-lib/Mail/Audit/Razor.pm
 lib/Mail/Audit/Vacation.pm
 lib/Mail/Audit/Util/Tempdir.pm
 Makefile.PL
