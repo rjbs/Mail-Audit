@@ -37,7 +37,7 @@ sub _autotype_new {
 
   my $dir;
   if ($options->{output_to_core}) {
-    $parser->output_to_core($options->{'output_to_core'});
+    $parser->output_to_core($options->{output_to_core});
   } else {
     $dir = Mail::Audit::Util::Tempdir->new;
     $mailinternet->_log(3, "created temporary directory " . $dir->name);
@@ -78,6 +78,10 @@ sub _autotype_new {
     # $parser->last_error.
   } else {
     $self = $newself;
+
+    # I am so, so sorry that this sort of thing is needed.
+    # -- rjbs, 2007-06-14
+    $self->{_log} = $mailinternet->{_log};
   }
 
   unless ($options->{output_to_core}) {

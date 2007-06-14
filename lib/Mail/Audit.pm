@@ -19,7 +19,7 @@ use constant REJECTED  => 100;
 use constant DEFERRED  => 75;
 use constant DELIVERED => 0;
 
-$Mail::Audit::VERSION = '2.218';
+$Mail::Audit::VERSION = '2.219';
 
 =head1 NAME
 
@@ -67,18 +67,7 @@ sub import {
   }
 }
 
-sub _log {
-  my ($self, $priority, $what) = @_;
-  return unless $self->{_log};
-  return if $self->{_log}{level} < $priority;
-  chomp $what;
-  chomp $what;
-  my ($subroutine) = (caller(1))[3];
-  $subroutine =~ s/(.*):://;
-  my ($line) = (caller(0))[2];
-  print { $self->{_log}{fh} } "$line($subroutine): $what\n"
-    or die "couldn't write to log file";
-}
+sub _log { shift->log(@_) }
 
 sub _get_opt {
   my ($self, $arg) = @_;
@@ -120,7 +109,7 @@ deferred back to the MTA, where they will show up in your mailq.
 You may also specify C<< log => $logfile >> to write a debugging log; you can
 set the verbosity of the log with the C<loglevel> key, on a scale of 1 to 4. If
 you specify a log level without a log file, logging will be written to
-F</tmp/you-audit.log> where F<you> is replaced by your user name.
+F<~/mail-audit.log>.
 
 Usually, the delivery methods C<accept>, C<pipe>, and C<resend> are final;
 Mail::Audit will terminate when they are done.  If you specify C<< noexit => 1
@@ -172,8 +161,8 @@ sub new {
     $log->{file} = exists $opts{log}
                  ? $opts{log}
                  : File::Spec->catfile(
-                     File::Spec->tmpdir,
-                     "$>-audit.log"
+                     File::HomeDir->my_home,
+                     "mail-audit.log"
                    );
 
     unless ($log->{file} and open $log->{fh}, ">>$log->{file}") {
@@ -822,7 +811,7 @@ sub pipe {
   return $status;
 }
 
-=item C<ignore>
+=item ignore
 
   $mail->ignore;
 
@@ -834,8 +823,12 @@ This is a final delivery method.  Set C<noexit> if you want to keep going.
 =cut
 
 sub ignore {
-  my $self = shift;
-  $self->_log(1, "Ignoring");
+  my ($self, $reason) = @_;
+
+  $self->_log(
+    1,
+    "Ignoring: " . (defined $reason ? $reason : '(no reason given)')
+  );
 
   my $local_opts = $self->_get_opt(\@_);
 
@@ -1006,6 +999,28 @@ Guess.
 =head1 MISCELLANEOUS METHODS
 
 =over
+
+=item log
+
+  $mail->log($priority => $message);
+
+This method logs the given message if C<$priority> is greater than the
+F<loglevel> given during construction.
+
+=cut
+
+sub log {
+  my ($self, $priority, $what) = @_;
+  return unless $self->{_log};
+  return if $self->{_log}{level} < $priority;
+  chomp $what;
+  chomp $what;
+  my ($subroutine) = (caller(1))[3];
+  $subroutine =~ s/(.*):://;
+  my ($line) = (caller(0))[2];
+  print { $self->{_log}{fh} } "$line($subroutine): $what\n"
+    or die "couldn't write to log file";
+}
 
 =item tidy
 

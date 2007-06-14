@@ -1,5 +1,13 @@
 Revision history for Perl extension Mail::Audit.
 
+2.219     2007-06-14
+          For security reasons, the log is now ~/mail-audit.log, not
+          /tmp/username-audit.log
+
+          fix bug: logging wasn't working when processing mime messages
+          add optional "reason" argument to ignore method
+          _log method renamed to log and documented
+
 2.218     2007-03-06
           remove List, Razor, and PGP plugins to their own dists
           this is the first step in paring down Mail::Audit
