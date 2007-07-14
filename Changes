@@ -1,5 +1,8 @@
 Revision history for Perl extension Mail::Audit.
 
+2.220     2007-07-14
+          fix a test to use File::HomeDir, to allow install as sudo-to-root
+
 2.219     2007-06-14
           For security reasons, the log is now ~/mail-audit.log, not
           /tmp/username-audit.log

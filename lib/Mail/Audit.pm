@@ -19,7 +19,7 @@ use constant REJECTED  => 100;
 use constant DEFERRED  => 75;
 use constant DELIVERED => 0;
 
-$Mail::Audit::VERSION = '2.219';
+$Mail::Audit::VERSION = '2.220';
 
 =head1 NAME
 

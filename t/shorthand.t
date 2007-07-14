@@ -25,7 +25,8 @@ my $audit = Mail::Audit->new(
   log       => "/dev/null",
 );
 
-my $home = (getpwuid($>))[7];
+use File::HomeDir;
+my $home = File::HomeDir->my_home;
 my $ymd  = do {
   my @localtime = localtime;
   sprintf "%04u%02u%02u",
