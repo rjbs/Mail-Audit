@@ -19,7 +19,7 @@ use constant REJECTED  => 100;
 use constant DEFERRED  => 75;
 use constant DELIVERED => 0;
 
-$Mail::Audit::VERSION = '2.220';
+$Mail::Audit::VERSION = '2.222';
 
 =head1 NAME
 
@@ -597,7 +597,9 @@ sub _accept_to_maildir {
   # XXX: Why the nuts is this here?  This should be another method, or a
   # plugin! -- rjbs, 2006-05-30
   unless (length $self->get("Lines")) {
-    my $num_lines = @{ $self->body };
+    my @lines = $self->body;
+    @lines = @{ $lines[0] } if @lines == 1 and ref $lines[0] eq 'ARRAY';
+    my $num_lines = @lines;
     $self->head->add("Lines", $num_lines);
     $self->_log(4, "Adding Lines: $num_lines header");
   }

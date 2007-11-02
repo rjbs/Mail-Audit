@@ -2,12 +2,11 @@
 use strict;
 use warnings;
 
+use Mail::Audit;
 use Test::More;
 
 plan skip_all => 'these tests are not yet useful on Win32' if $^O =~ /MSWin/;
 plan 'no_plan';
-
-BEGIN { use_ok('Mail::Audit'); }
 
 sub readfile {
   my ($name) = @_;

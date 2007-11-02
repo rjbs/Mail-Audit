@@ -1,5 +1,12 @@
 Revision history for Perl extension Mail::Audit.
 
+2.222     2007-11-01
+          count body lines without exploding
+            https://rt.cpan.org/Ticket/Display.html?id=29781
+
+2.221     2007-09-17
+          correct bugs exposed by new Test::More
+
 2.220     2007-07-14
           fix a test to use File::HomeDir, to allow install as sudo-to-root
 
