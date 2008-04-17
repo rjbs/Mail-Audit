@@ -1,7 +1,7 @@
 package Mail::Audit::Vacation;
 use Mail::Audit;
 use vars qw(@VERSION $vacfile $message $subject $replyto $from);
-$VERSION = '1.0';
+$VERSION = '2.223';
 $vacfile = ".vacation-cache";
 $message = "This user is on vacation.";
 $subject = "Vacation autoresponse";
