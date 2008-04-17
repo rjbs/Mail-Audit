@@ -4,6 +4,7 @@ inc/Module/Install.pm
 inc/Module/Install/Base.pm
 inc/Module/Install/Can.pm
 inc/Module/Install/Fetch.pm
+inc/Module/Install/ExtraTests.pm
 inc/Module/Install/Makefile.pm
 inc/Module/Install/Metadata.pm
 inc/Module/Install/Win32.pm
@@ -29,8 +30,8 @@ t/ignore.t
 t/is_mime.t
 t/messages/mime-text.msg
 t/messages/simple.msg
-t/pod-coverage.t
-t/pod.t
 t/reject.t
 t/shorthand.t
+xt/release/pod-coverage.t
+xt/release/pod.t
 LICENSE

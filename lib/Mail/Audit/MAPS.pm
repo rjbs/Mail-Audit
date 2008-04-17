@@ -1,7 +1,7 @@
 package Mail::Audit::MAPS;
 use Mail::Audit;
 use vars q(@VERSION);
-$VERSION = '1.8';
+$VERSION = '2.223';
 $host    = '.blackholes.mail-abuse.org';
 1;
 

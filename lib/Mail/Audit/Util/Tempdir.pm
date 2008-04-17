@@ -5,6 +5,8 @@ package Mail::Audit::Util::Tempdir;
 require File::Tempdir;
 our @ISA = qw(File::Tempdir);
 
+our $VERSION = '2.223';
+
 sub new {
   my $class = shift;
   my $self = $class->SUPER::new(@_);
@@ -13,7 +15,10 @@ sub new {
 }
 
 sub DESTROY {
-  return unless eval { $_[0]->{'Mail::Audit'}{pid} == $$ };
+  return unless do {
+    local $@;
+    eval { $_[0]->{'Mail::Audit'}{pid} == $$ };
+  };
   $_[0]->SUPER::DESTROY;
 }
 

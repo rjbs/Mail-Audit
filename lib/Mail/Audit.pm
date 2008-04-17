@@ -1,4 +1,5 @@
 package Mail::Audit;
+use 5.006;
 use strict;
 
 # $Id: /my/icg/mail-audit/trunk/lib/Mail/Audit.pm 22093 2006-06-05T03:36:12.885477Z rjbs  $
@@ -19,7 +20,7 @@ use constant REJECTED  => 100;
 use constant DEFERRED  => 75;
 use constant DELIVERED => 0;
 
-$Mail::Audit::VERSION = '2.222';
+$Mail::Audit::VERSION = '2.223';
 
 =head1 NAME
 
