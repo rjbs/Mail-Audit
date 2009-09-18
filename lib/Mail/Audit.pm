@@ -107,10 +107,11 @@ an C<accept()> is unsuccessful, the message will be saved to the C<emergency>
 mailbox instead.  If no C<emergency> mailbox is defined, messages will be
 deferred back to the MTA, where they will show up in your mailq.
 
-You may also specify C<< log => $logfile >> to write a debugging log; you can
-set the verbosity of the log with the C<loglevel> key, on a scale of 1 to 4. If
-you specify a log level without a log file, logging will be written to
-F<~/mail-audit.log>.
+You may also specify C<< log => $logfile >> to write a debugging log.  If you
+don't specify a log file, logs will be written to F<~/mail-audit.log>.   You
+can set the verbosity of the log with the C<loglevel> key.  A higher loglevel
+will result in more lines being logged.  The default level is 3.  To get all
+internally generated logs, log at level 5.  To get none, log at -1.  
 
 Usually, the delivery methods C<accept>, C<pipe>, and C<resend> are final;
 Mail::Audit will terminate when they are done.  If you specify C<< noexit => 1
