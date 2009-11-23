@@ -20,7 +20,7 @@ use constant REJECTED  => 100;
 use constant DEFERRED  => 75;
 use constant DELIVERED => 0;
 
-$Mail::Audit::VERSION = '2.224';
+$Mail::Audit::VERSION = '2.225';
 
 =head1 NAME
 
@@ -133,8 +133,8 @@ potentially expensive; if you don't want MIME parsing, use the C<nomime>
 option.
 
 You can pass further MIME options in the C<mimeoptions> variable: for example,
-if you want to output_to_core (man MIME::Parser) set C<mimeoptions =>
-{output_to_core=>1}>.
+if you want to output_to_core (man MIME::Parser) set C<< mimeoptions =>
+{output_to_core=>1} >>.
 
 =back
 

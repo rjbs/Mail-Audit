@@ -1,5 +1,11 @@
 Revision history for Perl extension Mail::Audit.
 
+2.225     2009-11-23
+          fix Pod error (thanks, FWIE)
+
+2.224     2009
+          improve documentation of log level
+
 2.223     2008-04-17
           localize $@ in DESTROY to prevent clobbering of outer $@
           (thanks HDP; sorry to have cost you a day!)
