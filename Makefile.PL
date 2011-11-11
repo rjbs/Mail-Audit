@@ -1,15 +1,28 @@
-use inc::Module::Install;
-all_from('lib/Mail/Audit.pm');
+use strict;
+use ExtUtils::MakeMaker;
 
-requires('Fcntl'          => 0);
-requires('File::Temp'     => 0);
-requires('File::HomeDir'  => 0.61); # previous v's lack user_home?
-requires('File::Tempdir'  => 0);
-requires('MIME::Entity'   => 0);
-requires('Mail::Internet' => 0);
-requires('Mail::Mailer'   => 0);
-requires('Net::SMTP'      => 0);
+use 5.6.0;
 
-extra_tests;
-
-WriteAll();
+WriteMakefile(
+  NAME          => 'Mail::Audit',
+  VERSION_FROM  => 'lib/Mail/Audit.pm',
+  (eval { ExtUtils::MakeMaker->VERSION(6.21) } ? (LICENSE => 'perl') : ()),
+  PREREQ_PM     => {
+    'Fcntl'          => 0,
+    'File::Temp'     => 0,
+    'File::HomeDir'  => 0.61, # previous v's lack user_home?
+    'File::Tempdir'  => 0,
+    'MIME::Entity'   => 0,
+    'Mail::Internet' => 0,
+    'Mail::Mailer'   => 0,
+    'Net::SMTP'      => 0,
+  },
+  (eval { ExtUtils::MakeMaker->VERSION(6.46) }
+    ? (META_MERGE => {
+        resources => {
+          Repository => 'http://github.com/rjbs/mail-audit'
+        }
+      })
+    : ()
+  ),
+);

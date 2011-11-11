@@ -2,15 +2,6 @@ bin/popread
 bin/proc2ma
 Changes
 FAQ
-inc/Module/Install.pm
-inc/Module/Install/Base.pm
-inc/Module/Install/Can.pm
-inc/Module/Install/ExtraTests.pm
-inc/Module/Install/Fetch.pm
-inc/Module/Install/Makefile.pm
-inc/Module/Install/Metadata.pm
-inc/Module/Install/Win32.pm
-inc/Module/Install/WriteAll.pm
 lib/Mail/Audit.pm
 lib/Mail/Audit/KillDups.pm
 lib/Mail/Audit/MailInternet.pm
@@ -20,8 +11,7 @@ lib/Mail/Audit/Util/Tempdir.pm
 lib/Mail/Audit/Vacation.pm
 LICENSE
 Makefile.PL
-MANIFEST
-META.yml
+MANIFEST			This list of files
 README
 t/basic.t
 t/custom-accept.t
