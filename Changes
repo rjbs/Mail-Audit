@@ -1,5 +1,8 @@
 Revision history for Perl extension Mail::Audit.
 
+2.226     2011-11-11
+          do not an impossible-to-survive state when MimeEntity autotype fails
+
 2.225     2009-11-23
           fix Pod error (thanks, FWIE)
 

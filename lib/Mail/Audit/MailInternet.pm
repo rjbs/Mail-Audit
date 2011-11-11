@@ -13,7 +13,7 @@ use Mail::Internet;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK);
 @ISA = qw(Mail::Audit Mail::Internet);
 
-$VERSION = '2.225';
+$VERSION = '2.226';
 
 sub _autotype_new {
   my $class = shift;

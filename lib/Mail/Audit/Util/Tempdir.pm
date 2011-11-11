@@ -5,7 +5,7 @@ package Mail::Audit::Util::Tempdir;
 require File::Tempdir;
 our @ISA = qw(File::Tempdir);
 
-our $VERSION = '2.225';
+our $VERSION = '2.226';
 
 sub new {
   my $class = shift;
