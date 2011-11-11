@@ -65,10 +65,8 @@ sub _autotype_new {
 
   # we won't look at $parser->last_error because we're trying to handle as
   # much as we can.
-  my $error = ($@);
-
-  if ($error) {
-    return ($newself, "encountered error during parse: $error");
+  if (! $newself) {
+    return ($self, "encountered error during parse: $@");
 
     # note to self:
     # if the error was due to an ill-formed message/rfc822 attachment,
