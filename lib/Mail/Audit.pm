@@ -168,7 +168,7 @@ sub new {
                    );
 
     unless ($log->{file} and open $log->{fh}, ">>$log->{file}") {
-      warn "couldn't open $log->{file} to log" if $log->{file};
+      warn "couldn't open $log->{file} to log: $!" if $log->{file};
       $log->{fh} = \*STDERR;
     }
 
