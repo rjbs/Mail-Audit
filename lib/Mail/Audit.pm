@@ -157,7 +157,6 @@ sub new {
   # set up logging
   unless ($opts{no_log}) {
     my $log = {};
-    $log->{fh} = Symbol::gensym;
     $log->{level} = exists $opts{loglevel} ? $opts{loglevel} : 3;
 
     $log->{file} = exists $opts{log}
@@ -167,7 +166,10 @@ sub new {
                      "mail-audit.log"
                    );
 
-    unless ($log->{file} and open $log->{fh}, ">>$log->{file}") {
+    my $output_fh;
+    if ($log->{file} and open my $output_fh, '>>', $log->{file}) {
+      $log->{fh} = $output_fh;
+    } else {
       warn "couldn't open $log->{file} to log: $!" if $log->{file};
       $log->{fh} = \*STDERR;
     }
