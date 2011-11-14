@@ -167,7 +167,7 @@ sub new {
                    );
 
     my $output_fh;
-    if ($log->{file} and open my $output_fh, '>>', $log->{file}) {
+    if ($log->{file} and open $output_fh, '>>', $log->{file}) {
       $log->{fh} = $output_fh;
     } else {
       warn "couldn't open $log->{file} to log: $!" if $log->{file};
