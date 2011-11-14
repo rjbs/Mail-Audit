@@ -1023,7 +1023,7 @@ sub log {
   $subroutine =~ s/(.*):://;
   my ($line) = (caller(0))[2];
   print { $self->{_log}{fh} } "$line($subroutine): $what\n"
-    or die "couldn't write to log file";
+    or die "couldn't write to log file: $!";
 }
 
 =item tidy
