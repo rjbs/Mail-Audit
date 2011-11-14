@@ -1,5 +1,8 @@
 Revision history for Perl extension Mail::Audit.
 
+2.227     2011-11-14
+          avoid leaking filehandles for logging
+
 2.226     2011-11-11
           do not an impossible-to-survive state when MimeEntity autotype fails
 

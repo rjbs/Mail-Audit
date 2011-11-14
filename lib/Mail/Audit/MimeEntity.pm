@@ -17,7 +17,7 @@ use Mail::Audit::MailInternet;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK $MIME_PARSER_TMPDIR);
 @ISA = qw(Mail::Audit MIME::Entity);
 
-$VERSION = '2.226';
+$VERSION = '2.227';
 
 # this may be a security problem on an untrusted multiuser system.
 # $MIME_PARSER_TMPDIR = "/tmp/" . getpwuid($>) . "-mailaudit";
