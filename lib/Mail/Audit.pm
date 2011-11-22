@@ -196,13 +196,10 @@ sub new {
       );
       eval {
         require Mail::Audit::MimeEntity;
-        import Mail::Audit::MimeEntity;
+        Mail::Audit::MimeEntity->import;
       };
       die "$@" if $@;
-      my $error;
-      ($self, $error)
-        = Mail::Audit::MimeEntity->_autotype_new($self, $opts{mimeoptions});
-      $self->_log(0, $error) if $error;
+      $self = Mail::Audit::MimeEntity->_autotype_new($self, $opts{mimeoptions});
     } else {
       $self->_log(3, "message is MIME, but 'nomime' option was set.");
     }

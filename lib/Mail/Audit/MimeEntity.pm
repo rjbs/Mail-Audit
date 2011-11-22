@@ -54,33 +54,13 @@ sub _autotype_new {
     if ($parser->can($option)) { $parser->$option($options->{$option}); }
   }
 
-  my $self;
+  my $self = $parser->parse_data(
+    [ @{ $mailinternet->head->header }, "\n", @{ $mailinternet->body } ]
+  );
 
-  # todo: add eval error trapping.  if there's a problem, return
-  # Mail::Audit::MailInternet as a fallback.
-  my $newself = eval {
-    $parser->parse_data(
-      [ @{ $mailinternet->head->header }, "\n", @{ $mailinternet->body } ]);
-  };
-
-  # we won't look at $parser->last_error because we're trying to handle as
-  # much as we can.
-  if (! $newself) {
-    return ($self, "encountered error during parse: $@");
-
-    # note to self:
-    # if the error was due to an ill-formed message/rfc822 attachment,
-    # we could reparse with extract_nested_messages => 0.
-    # it depends how badly the attachment is formed.
-    # for now we have ignore_errors(1) and we won't look at
-    # $parser->last_error.
-  } else {
-    $self = $newself;
-
-    # I am so, so sorry that this sort of thing is needed.
-    # -- rjbs, 2007-06-14
-    $self->{_log} = $mailinternet->{_log};
-  }
+  # I am so, so sorry that this sort of thing is needed.
+  # -- rjbs, 2007-06-14
+  $self->{_log} = $mailinternet->{_log};
 
   unless ($options->{output_to_core}) {
     my $output_dir = $parser->filer->output_dir;
@@ -92,7 +72,7 @@ sub _autotype_new {
   # problem. -- rjbs, 2006-10-31
   $self->{'__Mail::Audit::MimeEntity/tempdir'} = $dir;
   bless($self, $class);
-  return ($self, 0);
+  return $self;
 }
 
 =head2 parser
