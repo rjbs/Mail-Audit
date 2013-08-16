@@ -20,7 +20,7 @@ WriteMakefile(
   (eval { ExtUtils::MakeMaker->VERSION(6.46) }
     ? (META_MERGE => {
         resources => {
-          Repository => 'http://github.com/rjbs/mail-audit'
+          repository => 'http://github.com/rjbs/mail-audit'
         }
       })
     : ()
