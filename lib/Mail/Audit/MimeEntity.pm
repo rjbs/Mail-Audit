@@ -1,26 +1,13 @@
-package Mail::Audit::MimeEntity;
-
-=head1 NAME
-
-Mail::Audit::MailInternet - a Mail::Internet-based Mail::Audit object
-
-=cut
-
-# $Id: /my/icg/mail-audit/trunk/lib/Mail/Audit/MimeEntity.pm 22090 2006-06-05T03:28:52.097940Z rjbs  $
-
 use strict;
+package Mail::Audit::MimeEntity;
+# ABSTRACT: a Mail::Internet-based Mail::Audit object
+
 use File::Path;
 use Mail::Audit::Util::Tempdir;
 use MIME::Parser;
 use MIME::Entity;
 use Mail::Audit::MailInternet;
-use vars qw($VERSION @ISA @EXPORT @EXPORT_OK $MIME_PARSER_TMPDIR);
-@ISA = qw(Mail::Audit MIME::Entity);
-
-$VERSION = '2.227';
-
-# this may be a security problem on an untrusted multiuser system.
-# $MIME_PARSER_TMPDIR = "/tmp/" . getpwuid($>) . "-mailaudit";
+use parent qw(Mail::Audit MIME::Entity);
 
 my $parser;
 

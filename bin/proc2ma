@@ -1,4 +1,5 @@
 #!/usr/bin/perl
+# PODNAME: proc2ma
 my @grammar;
 
 my (%flags, $return);

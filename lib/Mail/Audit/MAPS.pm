@@ -1,13 +1,12 @@
+use strict;
 package Mail::Audit::MAPS;
+# ABSTRACT: Mail::Audit plugin for RBL checking
 use Mail::Audit;
-use vars q(@VERSION);
-$VERSION = '2.227';
-$host    = '.blackholes.mail-abuse.org';
+our $host    = '.blackholes.mail-abuse.org';
 1;
 
 package Mail::Audit;
 
-use strict;
 use Net::SMTP;
 use Mail::Internet;
 use Sys::Hostname;
@@ -76,19 +75,13 @@ sub _checkit {
 1;
 __END__
 
-=pod
-
-=head1 NAME
-
-Mail::Audit::MAPS - Mail::Audit plugin for RBL checking
-
 =head1 SYNOPSIS
 
     use Mail::Audit qw(MAPS);
-	my $mail = Mail::Audit->new;
+    my $mail = Mail::Audit->new;
     ...
-	if ($mail->rblcheck) {
-        ...
+    if ($mail->rblcheck) {
+      ...
     }
 
 =head1 DESCRIPTION
@@ -108,10 +101,3 @@ returns a reason if the mail is considered spam.
 
 =back
 
-=head1 AUTHOR
-
-Simon Cozens <simon@cpan.org>
-
-=head1 SEE ALSO
-
-L<Mail::Audit>

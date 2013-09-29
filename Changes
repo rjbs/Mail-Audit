@@ -1,5 +1,8 @@
 Revision history for Perl extension Mail::Audit.
 
+{{$NEXT}}
+          repackage, update repo and bugtracker metadata
+
 2.227     2011-11-14
           avoid leaking filehandles for logging
 

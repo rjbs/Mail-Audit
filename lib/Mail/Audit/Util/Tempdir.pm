@@ -1,11 +1,9 @@
 use strict;
 use warnings;
-
 package Mail::Audit::Util::Tempdir;
 require File::Tempdir;
-our @ISA = qw(File::Tempdir);
-
-our $VERSION = '2.227';
+use parent 'File::Tempdir';
+# ABSTRACT: self-cleaning fork-respecting tempdirs
 
 sub new {
   my $class = shift;
@@ -23,16 +21,3 @@ sub DESTROY {
 }
 
 1;
-
-__END__
-
-=head1 NAME
-
-Mail::Audit::Util::Tempdir - self-cleaning fork-respecting tempdirs
-
-=head2 SEE ALSO
-
-L<File::Tempdir>
-
-=cut
-

@@ -1,21 +1,14 @@
+use strict;
 package Mail::Audit::Vacation;
+# ABSTRACT: perform vacation autoresponding
 use Mail::Audit;
-use vars qw(@VERSION $vacfile $message $subject $replyto $from);
-$VERSION = '2.227';
+use vars qw($vacfile $message $subject $replyto $from);
 $vacfile = ".vacation-cache";
 $message = "This user is on vacation.";
 $subject = "Vacation autoresponse";
 $replyto = $from = "<>";
-1;
-
-=head1 NAME
-
-Mail::Audit::Vacation - perform vacation autoresponding
-
-=cut
 
 package Mail::Audit;
-use strict;
 
 sub vacation {
   my $item  = shift;

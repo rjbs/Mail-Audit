@@ -1,10 +1,9 @@
+use strict;
 package Mail::Audit::KillDups;
+# ABSTRACT: Mail::Audit plugin for duplicate suppression
 use Mail::Audit;
-use vars qw(@VERSION $dupfile $cache_bytes);
-$VERSION     = '2.227';
-$dupfile     = ".msgid-cache";
-$cache_bytes = 10000;
-1;
+our $dupfile     = ".msgid-cache";
+our $cache_bytes = 10000;
 
 package Mail::Audit;
 use strict;
@@ -62,18 +61,12 @@ sub killdups {
 1;
 __END__
 
-=pod
-
-=head1 NAME
-
-Mail::Audit::KillDups - Mail::Audit plugin for duplicate suppression
-
 =head1 SYNOPSIS
 
-    use Mail::Audit qw(KillDups);
-    $Mail::Audit::KillDups::dupfile = "/home/simon/.msgid-cache";
-        my $mail = Mail::Audit->new;
-    $mail->killdups;
+  use Mail::Audit qw(KillDups);
+  $Mail::Audit::KillDups::dupfile = "/home/simon/.msgid-cache";
+  my $mail = Mail::Audit->new;
+  $mail->killdups;
 
 =head1 DESCRIPTION
 
@@ -109,10 +102,3 @@ The semantics are tortured; the return values are as follows:
 
 =back
 
-=head1 AUTHOR
-
-Simon Cozens <simon@cpan.org>
-
-=head1 SEE ALSO
-
-L<Mail::Audit>

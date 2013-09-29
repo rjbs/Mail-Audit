@@ -1,12 +1,11 @@
-package Mail::Audit;
 use 5.006;
 use strict;
-
-# $Id: /my/icg/mail-audit/trunk/lib/Mail/Audit.pm 22093 2006-06-05T03:36:12.885477Z rjbs  $
+package Mail::Audit;
+# ABSTRACT: library for creating easy mail filters
 
 use Carp ();
 use File::Basename ();
-use File::HomeDir ();
+use File::HomeDir 0.61 ();
 use File::Spec ();
 use Mail::Audit::MailInternet ();
 use Mail::Internet ();
@@ -19,12 +18,6 @@ use Fcntl ':flock';
 use constant REJECTED  => 100;
 use constant DEFERRED  => 75;
 use constant DELIVERED => 0;
-
-$Mail::Audit::VERSION = '2.227';
-
-=head1 NAME
-
-Mail::Audit - Library for creating easy mail filters
 
 =head1 SYNOPSIS
 
@@ -233,7 +226,7 @@ sub _default_mbox {
   my $default_mbox = $ENV{MAIL};
 
   return $default_mbox if $default_mbox;
-  
+
   my $default_maildir = File::Spec->catdir(
     File::HomeDir->my_home,
     'Maildir'
@@ -345,7 +338,7 @@ sub _shorthand_expand {
 
 sub _expand_homedir {
   my ($self, $path) = @_;
-  
+
   my ($user, $rest) = $path =~ m!^~(\w*)((?:[/\\]).+)?$!;
 
   return $path unless defined $user and defined $rest;
@@ -1052,7 +1045,7 @@ sub delete_header  { $_[0]->head->delete($_[1]); }
 
 sub get {
   my ($self, $header) = @_;
-  
+
   if (wantarray) {
     my @strings = $self->head->get($header);
     chomp @strings;
@@ -1235,33 +1228,20 @@ sub _mkdir_p {  # mkdir -p (also create parents if necessary)
   return;
 }
 
-=head1 LICENSE
-
-The usual. This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
 
 =head1 BUGS
 
-Numerous and sometimes nasty.  RJBS is working to eradicate them all.
-
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Mail-Audit>
-
-=head1 PERL EMAIL PROJECT
-
-This module is maintained by the Perl Email Project, and is considered
-superseded by L<Email::Filter>.
-
-L<http://emailproject.perl.org/wiki/Mail::Audit>
+Numerous and sometimes nasty.
 
 =head1 CAVEATS
 
-If your mailbox file in /var/spool/mail/ doesn't already exist, you may need to
-use your standard system MDA to create it.  After it's been created,
+If your mailbox file in F</var/spool/mail/> doesn't already exist, you may need
+to use your standard system MDA to create it.  After it's been created,
 Mail::Audit should be able to append to it.  Mail::Audit may not be able to
-create /var/spool/mail because programs run from .forward don't inherit the
-special permissions needed to create files in that directory.
+create F</var/spool/mail> because programs run from F<.forward> don't inherit
+the special permissions needed to create files in that directory.
 
-=head1 AUTHORS
+=head1 HISTORY
 
 Simon Cozens <simon@cpan.org> wrote versions 1 and 2.
 
@@ -1271,31 +1251,20 @@ and autoreply features.
 
 Ricardo SIGNES <rjbs@cpan.org> took over after Meng and tried to tame the
 beast, refactoring, documenting, and testing.  Thanks to Listbox.com for
-sponsoring maintenance of this module !
+sponsoring maintenance of this module!
 
 =head1 SEE ALSO
 
-=over
-
-=item * L<http://www.perl.com/pub/a/2001/07/17/mailfiltering.html>
-
-=item * L<Mail::Internet>
-
-=item * L<Mail::SMTP>
-
-=item * L<Mail::Audit::List>
-
-=item * L<Mail::Audit::PGP>
-
-=item * L<Mail::Audit::MAPS>
-
-=item * L<Mail::Audit::KillDups>
-
-=item * L<Mail::Audit::Razor>
-
-=item * L<Mail::Audit::Vacation>
-
-=back
+=for :list
+* L<http://www.perl.com/pub/a/2001/07/17/mailfiltering.html>
+* L<Mail::Internet>
+* L<Mail::SMTP>
+* L<Mail::Audit::List>
+* L<Mail::Audit::PGP>
+* L<Mail::Audit::MAPS>
+* L<Mail::Audit::KillDups>
+* L<Mail::Audit::Razor>
+* L<Mail::Audit::Vacation>
 
 =cut
 
