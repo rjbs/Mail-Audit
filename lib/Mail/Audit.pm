@@ -725,6 +725,8 @@ sub reject {
 
   $self->_log(1, "Rejecting with exitcode " . REJECTED . " and reason $_[0]");
 
+  print STDERR @_, "\n";
+
   $self->_exit(REJECTED);
 }
 
